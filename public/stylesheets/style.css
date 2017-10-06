@@ -1,8 +1,65 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body{
+  padding-top: 100px; 
+}
+input::-ms-clear {
+    display: none;
+}
+/*Search Bar*/
+#search-bar-div{
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
+  border: 1px solid #ccc;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #fff;
+  border-radius: 2px;
+  background: #fff;
+  border: 1px solid #fff;
+  color: #757575;
+  cursor: default;
+  font-size: 14px;
+  font-weight: 100;
+  margin-bottom: 50px;
+}
+#search-bar-div:hover{
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.08);
+}
+#search-bar{
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  font-size: 18px;
+}
+#search-bar:focus{
+  box-shadow: none;
+}
+#search-title{
+  font-weight: 100;
+  color: #757575;
+  margin-bottom: 0px;
 }
 
-a {
-  color: #00B7FF;
+/*Results*/
+.result-container{
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 2px;
+  background: #fff;
+  border: 1px solid #fff;
+  color: #757575;
+  cursor: default;
+  font-size: 14px;
+  font-weight: 100;
+  padding: 30px;
+}
+.results-title{
+  font-size: 25px;
+  font-weight: 300;
+  margin-top: -25px;
+}
+.results-pdf{
+  background-color: #eee;
+  height: 200px;
+  border-radius: 2px;
 }

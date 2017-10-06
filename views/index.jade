@@ -1,5 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.container
+    div.row
+      div.col.s12.m10.l8.offset-m1.offset-l2
+        h3#search-title Search Collective Agreements
+    div.row
+      div.col.s12.m10.l8.offset-m1.offset-l2
+        div#search-bar-div
+          input#search-bar
+    div.row
+      div.col.s12
+        div.result-container
+          div.results-title PDF Title
+          div.fixed-action-btn.click-to-toggle
+            a.btn-floating.btn-large.red.tooltipped(data-position="left", data-delay="50", data-tooltip="Help")
+              i.material-icons help
+            ul
+              li
+                a.btn-floating.red
+                  i.material-icons insert_chart
+              li
+                a.btn-floating.red
+                  i.material-icons insert_chart
+              li
+                a.btn-floating.red
+                  i.material-icons insert_chart
+              li
+                a.btn-floating.red
+                  i.material-icons insert_chart
+          div.results-pdf PDF looking text goes here
