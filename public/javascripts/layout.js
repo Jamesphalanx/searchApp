@@ -19,6 +19,13 @@ $(document).ready(function (){
   //Begining Init
   $("#search-bar").focus();
 
+  $("#search-bar").keyup(function(event){
+    if(event.keyCode == 13){
+      if(tutMode){
+        $("#tut1container").transition();
+      }
+    }
+  });
 
   $('#french-btn').click(function (){
     if($(this).attr("data-current") == 'en'){
