@@ -2,31 +2,36 @@ extends layout
 
 block content
   div.container
-    div.row
-      div.col.s12.m10.l8.offset-m1.offset-l2
-        h3#search-title Search Collective Agreements
-    div.row
-      div.col.s12.m10.l8.offset-m1.offset-l2
-        div#search-bar-div
-          input#search-bar
+    div#tut1container
+      div#tut1title Type in to the search param 
+      div.row
+        div.col.s12.m10.l8.offset-m1.offset-l2
+          h3#search-title Search Collective Agreements
+      div.row
+        div.col.s12.m10.l8.offset-m1.offset-l2
+          div#search-bar-div
+            input#search-bar
+      div#tut1explain1.tut1explain Try typing in certain key words...  like
+      div#tut1explain2.tut1explain "Testing my search"
+      div#tut1explain3.tut1explain "And another One"
+      div#tut1explain4.tut1explain "fake text 101"
+      div#tut1explain5.tut1explain Press Enter to search
     div.row
       div.col.s12
         div.result-container
           div.results-title PDF Title
-          div.fixed-action-btn.click-to-toggle
-            a.btn-floating.btn-large.red.tooltipped(data-position="left", data-delay="50", data-tooltip="Help")
-              i.material-icons help
-            ul
-              li
-                a.btn-floating.red
-                  i.material-icons insert_chart
-              li
-                a.btn-floating.red
-                  i.material-icons insert_chart
-              li
-                a.btn-floating.red
-                  i.material-icons insert_chart
-              li
-                a.btn-floating.red
-                  i.material-icons insert_chart
           div.results-pdf PDF looking text goes here
+    div.fixed-action-btn.click-to-toggle#help-btn-div
+      a.btn-floating.btn-large.red.lighten-2.tooltipped#help-btn(data-position="left", data-tooltip="Help")
+        i.material-icons help
+      ul#help-btn-grp
+        li
+          a.btn-floating.brown.lighten-2#tutorial-btn(data-position="left", data-delay="100", data-tooltip="Tutorial")
+            i.material-icons open_in_browser
+        li
+          a.btn-floating.blue.lighten-2#feedback-btn(data-position="left", data-delay="50", data-tooltip="Feedback")
+            i.material-icons feedback
+
+    div.fixed-action-btn#french-btn-div
+      a.btn-floating.btn-large.teal.lighten-1.tooltipped(data-position="left", data-tooltip="Français", data-current='en')#french-btn Fr
+    div#tutorial-div

@@ -1,5 +1,5 @@
 body{
-  padding-top: 100px; 
+  padding-top: 150px; 
 }
 input::-ms-clear {
     display: none;
@@ -21,7 +21,7 @@ input::-ms-clear {
   margin-bottom: 50px;
 }
 #search-bar-div:hover{
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.08);
 }
 #search-bar{
@@ -62,4 +62,63 @@ input::-ms-clear {
   background-color: #eee;
   height: 200px;
   border-radius: 2px;
+}
+#help-btn-div{
+  bottom: 90px;
+}
+#help-btn-grp{
+  margin-bottom: -8px;
+}
+#help-btn-grp li{
+  margin-bottom: 10px;
+}
+
+/*Tutorial*/
+#tutorial-div{
+  background: url(../images/iefilter.jpg) no-repeat -999px -999px;
+  background-color: rgba(0,0,0,0.65); /*dim the background*/
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#44000000', endColorstr='#44000000'); /* IE */
+  left:0;
+  top:0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  display: none;
+  opacity: 0;
+}
+#tut1container{
+  background-color: white;
+  border-radius: 2px;
+}
+#tut1title{
+  font-size: 50px;
+  position: absolute;
+  margin-top: -75px;
+  font-weight: 100;
+  color: white;
+}
+#tut1explain1{
+  margin-bottom: -50px;
+}
+#tut1explain2{
+  margin-bottom: -100px;
+}
+#tut1explain3{
+  margin-bottom: -150px;
+}
+#tut1explain4{
+  margin-bottom: -200px;
+}
+#tut1explain5{
+  margin-bottom: -250px;
+}
+.tut1explain{
+  font-size: 30px;
+  position: absolute;
+  bottom: 0;
+  font-weight: 100;
+  color: white;
+  right: 0;
+  opacity: 0;
 }
