@@ -40,6 +40,13 @@ input::-ms-clear {
 }
 
 /*Results*/
+#search-results-count{
+  text-align: right;
+  font-weight: 100;
+  font-size: 16px;
+  margin-top: -14px;
+  color: #999;
+}
 .result-container{
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
   border: 1px solid #ccc;
@@ -53,16 +60,48 @@ input::-ms-clear {
   font-weight: 100;
   padding: 30px;
 }
-.results-title{
+.result-title{
   font-size: 25px;
-  font-weight: 300;
+  font-weight: 100;
   margin-top: -25px;
+  margin-bottom: 5px;
 }
-.results-pdf{
+.result-pdf{
   background-color: #eee;
-  height: 200px;
   border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
 }
+.result-pdf-page{
+  background-color: white;
+  margin-left: 10%;
+  border-top: 0px;
+  margin-right: 10%;
+  height: 100%;
+  padding: 10px 20px;
+}
+.blurry-text1{
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0,0,0,0.4);
+  margin-top: -20px;
+  margin-bottom: -7px;
+}
+.blurry-text2{
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0,0,0,0.4);
+  margin-top: -5px;
+  margin-bottom: -22px;
+}
+.download-btns{
+  position: absolute;
+  right:0px;
+  margin-right: 35px;
+  margin-top: -1px;
+  padding-left: 16px;
+  padding-right: 16px;
+  transform: scale(0.75);
+}
+
 #help-btn-div{
   bottom: 90px;
 }
@@ -89,7 +128,7 @@ input::-ms-clear {
 }
 #tut1container{
   background-color: white;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 #tut1title{
   font-size: 50px;

@@ -24,6 +24,9 @@ $(document).ready(function (){
       if(tutMode){
         $("#tut1container").transition();
       }
+
+      //Search for something
+      socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
     }
   });
 
@@ -33,6 +36,10 @@ $(document).ready(function (){
       $(this).attr("data-tooltip","English");
       $(this).text("En");
       $(this).tooltip({delay: 50});
+      $(this).transition({
+        perspective: '100px',
+        rotate3d: '1,1,0,360deg'
+      }).removeClass('teal').addClass('indigo');
 
       $("#search-title").text(fr.title);
       $("#help-btn").attr("data-tooltip",fr.helpBtn);
@@ -44,6 +51,10 @@ $(document).ready(function (){
       $(this).attr("data-tooltip","Français");
       $(this).text("Fr");
       $(this).tooltip({delay: 50});
+      $(this).transition({
+        perspective: '100px',
+        rotate3d: '1,1,0,0deg'
+      }).removeClass('indigo').addClass('teal');
 
       $("#search-title").text(en.title);
       $("#help-btn").attr("data-tooltip",en.helpBtn);
@@ -70,6 +81,27 @@ $(document).ready(function (){
 });
 
 //Socket Io
-socket.on('serachResults', function (data) {
+socket.on('searchResults', function (data) {
+  console.log(data);
+  //Search Result Count
+  $("#search-results").append("<h4 id='search-results-count'>"+data.answers.length+" results found</h4>");
 
+  //Results
+  for (var i = 0; i < data.answers.length; i++) {
+    $("#search-results").append("<div class='row' id='search-"+i+"' style='opacity:0; transform: translate(0px, 10px);'><div class='col s12'><div class='result-container'>"+
+      "<div class='result-title'>"+data.answers[i].pdf_link+
+        "<a class='btn-flat waves-effect waves-grey lighten-2 download-btns' id='download-"+i+"'><i class='material-icons'>file_download</i></a>"+
+      "</div>"+
+      "<div class='result-pdf'>"+
+        "<div class='result-pdf-page z-depth-4'>"+
+          "<p class='blurry-text1'>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nulla Lacinia, Urna Quis Pharetra Facilisis, Arcu Augue</p>"+
+          "<p>"+data.answers[i].passage+"</p>"+
+          "<p class='blurry-text2'>Morbi Luctus Ex Eget Pellentesque Pretium. Fusce At Quam Orci. Etiam Sapien Purus, Cursus Ut Elit Sed, Faucibus</p>"+
+          "</div>"+
+        "</div>"+
+      "</div></div></div>");
+    $("#search-"+i).transition({opacity:1, y:0, delay: i*250});
+  }
 });
+
+
