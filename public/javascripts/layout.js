@@ -37,6 +37,7 @@ function debounce(func, wait, immediate) {
 $(document).ready(function (){
   //Begining Init
   $("#search-bar").focus().val("");
+  $("#search-results").css("top", ($("#tut1container").height()+160) + "px");
 
   function loadingAnimation(){
     $("#search-results").html('<div id="loading-container"><div class="lds-css"><div style="width:200px;height:200px;" class="lds-ripple"><div></div><div></div></div></div></div>');
@@ -149,12 +150,10 @@ $(document).ready(function (){
 
 //Socket Io
 socket.on('searchResults', function (data) {
-
   //hide loading gif
   $("#loading-container").fadeOut(function(){
     $(this).remove();
   });
-  console.log(data);
   //Search Result Count
   if($('#french-btn').data("current") == 'en'){
     $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'>"+data.answers.length+en.resultsTxt+"</h4>");
@@ -201,9 +200,6 @@ socket.on('autoComplete', function (data){
     $("#auto-complete").append(addedP);
     addedP.transition({opacity:1,y:0});
   };
-  //resize the search results
-  var tempHeight = $("#auto-complete").height();
-  $("#result-container").transition({y:-tempHeight});
 
   //If one of the auto complete is clicked on.
   $("#auto-complete p").click(function (){

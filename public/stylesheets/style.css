@@ -22,6 +22,7 @@ h1,h2,h3,h4{
   font-size: 14px;
   font-weight: 100;
   margin-bottom: 50px;
+
 }
 #search-bar-div:hover{
   border: 1px solid #ddd;
@@ -53,6 +54,7 @@ h1,h2,h3,h4{
 #auto-complete p:hover{
   background-color: #e0f2f1;
 }
+
 /*menu*/
 #french-btn{
   -webkit-transition: translate3d(0,0,0);
@@ -120,6 +122,11 @@ h1,h2,h3,h4{
 }
 
 /*Results*/
+#search-results{
+  position: absolute;
+  width: inherit;
+  z-index: -1;
+}
 #search-results-count{
   text-align: right;
   font-weight: 100;
@@ -238,8 +245,9 @@ h1,h2,h3,h4{
   opacity: 0;
 }
 #tut1container{
-  background-color: white;
+  background-color: transparent;
   border-radius: 5px;
+  z-index: 8;
 }
 #tut1title{
   font-size: 50px;
