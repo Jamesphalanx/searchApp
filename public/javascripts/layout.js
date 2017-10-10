@@ -139,7 +139,7 @@ $(document).ready(function (){
   $("#tutorial-btn").click(function (){
     tutMode = true;
     $("#tutorial-div").show().transition({opacity:1});
-    $("#tut1container").css('position', 'relative').css("z-index","101");
+    $("#tut1container").css("background-color","white").css('position', 'relative').css("z-index","101");
       $("#tut1explain1").transition({opacity:1, y:10, delay:1000});
       $("#tut1explain2").transition({opacity:1, y:10, delay:1500});
       $("#tut1explain3").transition({opacity:1, y:10, delay:2000});

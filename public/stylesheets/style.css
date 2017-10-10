@@ -247,7 +247,6 @@ h1,h2,h3,h4{
 #tut1container{
   background-color: transparent;
   border-radius: 5px;
-  z-index: 8;
 }
 #tut1title{
   font-size: 50px;
