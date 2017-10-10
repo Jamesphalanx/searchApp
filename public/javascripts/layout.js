@@ -19,12 +19,18 @@ $(document).ready(function (){
   //Begining Init
   $("#search-bar").focus();
 
+  function loadingAnimation(){
+    $("#search-results").html('<div id="loading-container"><div class="lds-css"><div style="width:200px;height:200px;" class="lds-ripple"><div></div><div></div></div></div></div>');
+  }
+
+  //When enter is pressed
   $("#search-bar").keyup(function(event){
     if(event.keyCode == 13){
       if(tutMode){
         $("#tut1container").transition();
       }
-
+      //Loading Gif
+      loadingAnimation();
       //Search for something
       socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
     }
@@ -82,10 +88,15 @@ $(document).ready(function (){
 
 //Socket Io
 socket.on('searchResults', function (data) {
+
+  //hide loading gif
+  $("#loading-container").fadeOut(function(){
+    $(this).remove();
+  });
   console.log(data);
   //Search Result Count
-  $("#search-results").append("<h4 id='search-results-count'>"+data.answers.length+" results found</h4>");
-
+  $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'>"+data.answers.length+" results found</h4>");
+  $("#search-results-count").transition({opacity:1,delay:300});
   //Results
   for (var i = 0; i < data.answers.length; i++) {
     $("#search-results").append("<div class='row' id='search-"+i+"' style='opacity:0; transform: translate(0px, 10px);'><div class='col s12'><div class='result-container'>"+
@@ -100,7 +111,7 @@ socket.on('searchResults', function (data) {
           "</div>"+
         "</div>"+
       "</div></div></div>");
-    $("#search-"+i).transition({opacity:1, y:0, delay: i*250});
+    $("#search-"+i).transition({opacity:1, y:0, delay: 100 + i*250});
   }
 });
 
