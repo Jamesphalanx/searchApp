@@ -41,6 +41,22 @@ h1,h2,h3,h4{
   color: #757575;
   margin-bottom: 0px;
 }
+#auto-complete{
+  font-size: 16px;
+}
+#auto-complete p{
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 5px;
+  cursor: pointer;
+}
+#auto-complete p:hover{
+  background-color: #e0f2f1;
+}
+/*menu*/
+#french-btn{
+  -webkit-transition: translate3d(0,0,0);
+}
 
 /*Loading*/
 #loading-container{
@@ -144,17 +160,49 @@ h1,h2,h3,h4{
   height: 100%;
   padding: 10px 20px;
 }
+.result-text{
+  font-size: 16px;
+}
 .blurry-text1{
-  color: transparent;
+  color: #eee;
+  filter: progid:DXImageTransform.Microsoft.Chroma(color=#333333),
+          progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
+          progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -20px;
+  margin-top: -22px;
   margin-bottom: -7px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-left: 5px;
+  margin-left: -5px;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 .blurry-text2{
-  color: transparent;
+  color: #eee;
+  filter: progid:DXImageTransform.Microsoft.Chroma(color=#333333),
+          progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
+          progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -5px;
-  margin-bottom: -22px;
+  margin-top: -7px;
+  margin-bottom: -23px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-left: 5px;
+  margin-left: -5px;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 .download-btns{
   position: absolute;
@@ -165,7 +213,6 @@ h1,h2,h3,h4{
   padding-right: 16px;
   transform: scale(0.75);
 }
-
 #help-btn-div{
   bottom: 90px;
 }
