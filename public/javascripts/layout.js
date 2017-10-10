@@ -29,10 +29,21 @@ $(document).ready(function (){
       if(tutMode){
         $("#tut1container").transition();
       }
-      //Loading Gif
-      loadingAnimation();
-      //Search for something
-      socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
+      //If there are search results currently...
+      if($("#search-results").html() != ''){
+        $("#search-results").fadeOut(function (){
+          //Loading Gif
+          $(this).fadeIn();
+          loadingAnimation();
+          //Search for something
+          socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
+        });
+      }else{
+        //Loading Gif
+        loadingAnimation();
+        //Search for something
+        socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
+      }
     }
   });
 
@@ -91,7 +102,7 @@ socket.on('searchResults', function (data) {
 
   //hide loading gif
   $("#loading-container").fadeOut(function(){
-    $(this).remove();
+    //$(this).remove();
   });
   console.log(data);
   //Search Result Count
