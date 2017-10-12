@@ -55,6 +55,10 @@ h1,h2,h3,h4{
   background-color: #e0f2f1;
 }
 
+.auto-comp-active{
+  background-color: #e0f2f1;
+}
+
 /*menu*/
 #french-btn{
   -webkit-transition: translate3d(0,0,0);

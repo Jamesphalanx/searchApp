@@ -20,24 +20,21 @@ var fr = {
 var tutMode = false;
 
 function debounce(func, wait, immediate) {
-    var timeout;
-    return function() {
-        var context = this, args = arguments;
-        var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
     };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 };
 
 $(document).ready(function (){
-  //Begining Init
-  $("#search-bar").focus().val("");
-  $("#search-results").css("top", ($("#tut1container").height()+160) + "px");
 
   function loadingAnimation(){
     $("#search-results").html('<div id="loading-container"><div class="lds-css"><div style="width:200px;height:200px;" class="lds-ripple"><div></div><div></div></div></div></div>');
@@ -45,11 +42,15 @@ $(document).ready(function (){
 
   //search event listener
   $("#search-bar").keyup(debounce(function(event){
-
     //When enter is pressed on search bar
     if(event.which == 13){
       if(tutMode){
         $("#tut1container").transition();
+      }
+
+      if($("#auto-complete .auto-comp-active").length){
+        $('#search-bar').val($("#auto-complete .auto-comp-active").text());
+        socket.emit('autoCompleteSelected', {selectedId: $("#auto-complete .auto-comp-active").attr("data-uid")});
       }
 
       $("#auto-complete").html("").css("border-top", "none");
@@ -68,6 +69,31 @@ $(document).ready(function (){
         //Search for something
         socket.emit('searchAttempt', {searchInput:$('#search-bar').val()});
       }
+    }else if(event.which == 40){
+      //Down
+      if($("#auto-complete .auto-comp-active").length != 0){
+        //if list is not empty
+        if($("#auto-complete .auto-comp-active").next().length){
+          $("#auto-complete .auto-comp-active").removeClass('auto-comp-active').next().addClass('auto-comp-active');
+        }
+      }else{
+        $("#auto-complete p").eq(0).addClass("auto-comp-active");
+      }
+    }else if(event.which == 38){
+      //Up
+      if($("#auto-complete .auto-comp-active").length != 0){
+        //if list is not empty
+        if($("#auto-complete .auto-comp-active").prev().length){
+          $("#auto-complete .auto-comp-active").removeClass('auto-comp-active').prev().addClass('auto-comp-active');
+        }else{
+          $("#auto-complete .auto-comp-active").removeClass('auto-comp-active');
+        }
+        var tempInput = $("#search-bar").val();
+        $("#search-bar").val("");
+        $("#search-bar").val(tempInput);
+      }
+    }else if(event.which == 37 || event.which == 39 || event.which == 16 || event.which == 17 || event.which == 18 || event.which == 9){
+
     }else{
       //When search bar has text greater than 3 characters
       if($(this).val().length > 3){
@@ -76,7 +102,7 @@ $(document).ready(function (){
         $("#auto-complete").html("").css("border-top", "none");
       }
     }
-  },200));
+  },50));
 
   //French Translations
   $('#french-btn').click(function (){
@@ -124,8 +150,8 @@ $(document).ready(function (){
         $(this).attr("data-tooltip",en.downloadBtn);
       });
     }
-    $("#help-btn-div a").tooltip({delay: 50});
 
+    $("#help-btn-div a").tooltip({delay: 50});
     $(".download-btns").tooltip({delay: 0}).each(function (){
       $("#"+$(this).attr('data-tooltip-id')).css("margin-top", "16px").css("margin-left", "-8px");
     });
@@ -146,6 +172,10 @@ $(document).ready(function (){
       $("#tut1explain4").transition({opacity:1, y:10, delay:2500});
       $("#tut1explain5").transition({opacity:1, y:10, delay:3000});
   });
+
+  //Begining Init
+  $("#search-bar").focus().val("");
+  $("#search-results").css("top", ($(".container").height()+160) + "px");
 });
 
 //Socket Io
