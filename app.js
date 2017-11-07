@@ -17,7 +17,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 console.log("Socket IO Server Connected");
-server.listen(80);
+server.listen(81);
 
 //Mongoose DB connection
 mongoose.connect('mongodb://localhost/searchApp', { useMongoClient: true, promiseLibrary: global.Promise });

@@ -1,5 +1,5 @@
-//Socket Connection.
-var socket = io.connect('http://localhost');
+//Socket Connection.//Socket Connection.
+var socket = io.connect('http://10.54.60.116:81');
 
 var en = {
   title : "Search Collective Agreements",
