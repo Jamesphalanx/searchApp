@@ -175,26 +175,26 @@ $(document).ready(function (){
   });
 
   $("#close-btn-div").click(function (){
-    tutMode = false;
-    $(".tut1explain").css("display","none");
-    $("#tutorial-div").hide().transition({opacity:0, duration:0});
-    $("#tut1explain1").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain2").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain3").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain4").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain5").transition({opacity:0, y:0, duration:0});
-
-    $("#tutorial-btn").show();
-    $("#close-btn-div").hide();
+    closeTutorial();
   });
-
-
-
   //Begining Init
   $("#search-bar").focus().val("");
   $("#search-results").css("top", ($(".container").height()+180) + "px");
 });
 
+function closeTutorial(){
+  tutMode = false;
+  $(".tut1explain").css("display","none");
+  $("#tutorial-div").hide().transition({opacity:0, duration:0});
+  $("#tut1explain1").transition({opacity:0, y:0, duration:0});
+  $("#tut1explain2").transition({opacity:0, y:0, duration:0});
+  $("#tut1explain3").transition({opacity:0, y:0, duration:0});
+  $("#tut1explain4").transition({opacity:0, y:0, duration:0});
+  $("#tut1explain5").transition({opacity:0, y:0, duration:0});
+
+  $("#tutorial-btn").show();
+  $("#close-btn-div").hide();
+}
 //Socket Io
 socket.on('searchResults', function (data) {
   //hide loading gif
@@ -203,9 +203,9 @@ socket.on('searchResults', function (data) {
   });
   //Search Result Count
   if($('#french-btn').data("current") == 'en'){
-    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'>"+data.answers.length+en.resultsTxt+"</h4>");
+    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.answers.length+"</b>"+en.resultsTxt+"</h4>");
   }else{
-    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'>"+data.answers.length+fr.resultsTxt+"</h4>");
+    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.answers.length+"</b>"+fr.resultsTxt+"</h4>");
   }
   $("#search-results-count").transition({opacity:1,delay:300});
   //Results
@@ -253,33 +253,67 @@ socket.on('searchResults', function (data) {
     $(this).parent().find('.thumb-down').removeClass('thumb-active');
     $(this).addClass('thumb-active');
   });
-  $(".thumb-up").tooltip({delay: 50}).each(function (){
-    $("#"+$(this).data('tooltip-id')).css("margin-top", "16px");
+  $(".thumb-up").tooltip({delay: 50}).each(function (i, obj){
+    $(obj).css("margin-top", "16px");
   });
 
   $(".thumb-down").click(function (){
     $(this).parent().find('.thumb-up').removeClass('thumb-active');
     $(this).addClass('thumb-active');
   });
-  $(".thumb-down").tooltip({delay: 50}).each(function (){
-    $("#"+$(this).data('tooltip-id'));
+  $(".thumb-down").tooltip({delay: 50}).each(function (i, obj){
+    $(obj).css("margin-top", "0px");
   });
 
   //If still tutorial mode, show the next steps & change the buttons back.
   if(tutMode){
-    //Remove the first tutorial
-    tutMode = false;
-    $(".tut1explain").css("display","none");
-    $("#tut1container").css("background-color","white").css('position', 'relative').css("z-index","9");
-    $("#tut1explain1").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain2").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain3").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain4").transition({opacity:0, y:0, duration:0});
-    $("#tut1explain5").transition({opacity:0, y:0, duration:0});
-    //Start the second tutorial.
-    //grab the first search result
+    closeTutorial();
+    //first returned search.
     var fSearch = $("#search-results").find(".search-result")[0];
-    //$("#search-results").css("background-color","white").css("z-index","120");
+    if(fSearch){
+      //title
+      var tutTitle = $("<div>");
+      tutTitle.addClass("floatingtext");
+      tutTitle.html("The PDF title is shown here");
+      tutTitle.css("margin-top","-37px");
+      tutTitle.css("margin-left","30px");
+      $(fSearch).append(tutTitle);
+
+      //content
+      var tutContent = $("<div>");
+      tutContent.addClass("floatingtext");
+      tutContent.html("The relevent PDF content is displayed here");
+      tutContent.css("margin-top","60px");
+      tutContent.css("margin-left","500px");
+      $(fSearch).append(tutContent);
+
+      //download
+      var tutdown = $("<div>");
+      tutdown.addClass("floatingtext");
+      tutdown.html("Download the PDF here");
+      tutdown.css("right","0");
+      tutdown.css("margin-right","80px");
+      $(fSearch).append(tutdown);
+
+      //Thumbs
+      var tutthumb = $("<div>");
+      tutthumb.addClass("floatingtext");
+      tutthumb.html("Use the thumbs up or down </br>to improve our search results");
+      tutthumb.css("right","0");
+      tutthumb.css("margin-right","-140px");
+      tutthumb.css("margin-top","60px");
+      $(fSearch).append(tutthumb);
+
+      $(".floatingtext").click(function (){
+        $(this).transition({
+          opacity:0,
+          y: -5,
+          complete: function (){
+            $(this).remove();
+          }
+        });
+      });
+    }
   }
 });
 

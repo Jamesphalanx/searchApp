@@ -133,8 +133,8 @@ h1,h2,h3,h4{
 }
 #search-results-count{
   text-align: right;
-  font-weight: 100;
-  font-size: 16px;
+  font-weight: 300;
+  font-size: 18px;
   margin-top: -14px;
   color: #999;
 }
@@ -178,9 +178,9 @@ h1,h2,h3,h4{
   color: #eee;
   filter: progid:DXImageTransform.Microsoft.Chroma(color=#333333),
           progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
-          progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
+          progid:DXImageTransform.Microsoft.Blur(pixelradius=3);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -22px;
+  margin-top: -24px;
   margin-bottom: -7px;
   white-space: nowrap;
   overflow: hidden;
@@ -200,7 +200,7 @@ h1,h2,h3,h4{
           progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
           progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -7px;
+  margin-top: -5px;
   margin-bottom: -23px;
   white-space: nowrap;
   overflow: hidden;
@@ -305,4 +305,17 @@ h1,h2,h3,h4{
   right: 0;
   opacity: 0;
   display: none;
+}
+.floatingtext{
+  border-radius: 2px;
+  position: absolute;
+  background-color: #323232;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+}
+.floatingtext:hover{
+  background-color: #454545;
 }
