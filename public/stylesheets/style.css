@@ -222,9 +222,31 @@ h1,h2,h3,h4{
   margin-top: -1px;
   padding-left: 16px;
   padding-right: 16px;
-  transform: scale(0.75);
+  transform: scale(0.70);
 }
-#help-btn-div{
+.thumb-up, .thumb-down{
+  opacity: 0.35;
+}
+.thumb-up:hover, .thumb-down:hover{
+  opacity: 1;
+}
+.thumb-active{
+  opacity: 1;
+}
+.thumb-buttons{
+  cursor: pointer;
+}
+.thumb-div{
+  position: absolute;
+  right: 0px;
+  transform: scale(0.85);
+  margin-right: -18px;
+  margin-top: -30px;
+}
+#close-btn-div{
+  display: none;
+}
+#help-btn-div, #close-btn-div{
   bottom: 90px;
 }
 #help-btn-grp{
@@ -282,4 +304,5 @@ h1,h2,h3,h4{
   color: white;
   right: 0;
   opacity: 0;
+  display: none;
 }

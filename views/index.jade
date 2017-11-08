@@ -3,7 +3,7 @@ extends layout
 block content
   div.container
     div#tut1container
-      div#tut1title Type in to the search param 
+      div#tut1title Click the search bar
       div.row
         div.col.s12.m10.l8.offset-m1.offset-l2
           h3#search-title Search Collective Agreements
@@ -12,22 +12,29 @@ block content
           div#search-bar-div
             input#search-bar
             div#auto-complete
-      div#tut1explain1.tut1explain Try typing in certain key words...  like
-      div#tut1explain2.tut1explain "Testing my search"
-      div#tut1explain3.tut1explain "And another One"
-      div#tut1explain4.tut1explain "fake text 101"
-      div#tut1explain5.tut1explain Press Enter to search
+      div#tut1explain1.tut1explain and type in certain keywords, such as...
+      div#tut1explain2.tut1explain "Computer system sick days"
+      div#tut1explain3.tut1explain "AS health plan"
+      div#tut1explain4.tut1explain "Border service pay rates"
+      div#tut1explain5.tut1explain Press enter to search.
     div#search-results
-    div.fixed-action-btn.click-to-toggle#help-btn-div
-      a.btn-floating.btn-large.red.lighten-2.tooltipped#help-btn(data-position="left", data-tooltip="Help")
-        i.material-icons help
-      ul#help-btn-grp
-        li
-          a.btn-floating.brown.lighten-2#tutorial-btn(data-position="left", data-delay="100", data-tooltip="Tutorial")
-            i.material-icons open_in_browser
-        li
-          a.btn-floating.blue.lighten-2#feedback-btn(data-position="left", data-delay="50", data-tooltip="Feedback")
-            i.material-icons feedback
+    div.fixed-action-btn#help-btn-div
+      a.btn-floating.btn-large.brown.lighten-2.tooltipped#tutorial-btn(data-position="left", data-delay="100", data-tooltip="Tutorial")
+        i.material-icons open_in_browser
+    div.fixed-action-btn#close-btn-div
+      a.btn-floating.btn-large.red.lighten-2.tooltipped#tutorial-close-btn(data-position="left", data-delay="100", data-tooltip="Close Tutorial")
+        i.material-icons close
+    //
+      div.fixed-action-btn.click-to-toggle#help-btn-div
+        a.btn-floating.btn-large.red.lighten-2.tooltipped#help-btn(data-position="left", data-tooltip="Help")
+          i.material-icons help
+        ul#help-btn-grp
+          li
+            a.btn-floating.brown.lighten-2#tutorial-btn(data-position="left", data-delay="100", data-tooltip="Tutorial")
+              i.material-icons open_in_browser
+          li
+            a.btn-floating.blue.lighten-2#feedback-btn(data-position="left", data-delay="50", data-tooltip="Feedback")
+              i.material-icons feedback
 
     div.fixed-action-btn#french-btn-div
       a.btn-floating.btn-large.teal.lighten-1.tooltipped(data-position="left", data-tooltip="Français", data-current='en')#french-btn Fr

@@ -1,5 +1,5 @@
 //Socket Connection.//Socket Connection.
-var socket = io.connect('http://10.54.60.116:81');
+var socket = io.connect('http://localhost:81');
 
 var en = {
   title : "Search Collective Agreements",
@@ -44,10 +44,6 @@ $(document).ready(function (){
   $("#search-bar").keyup(debounce(function(event){
     //When enter is pressed on search bar
     if(event.which == 13){
-      if(tutMode){
-        $("#tut1container").transition();
-      }
-
       if($("#auto-complete .auto-comp-active").length){
         $('#search-bar').val($("#auto-complete .auto-comp-active").text());
         socket.emit('autoCompleteSelected', {selectedId: $("#auto-complete .auto-comp-active").attr("data-uid")});
@@ -121,9 +117,9 @@ $(document).ready(function (){
         rotateX: '0deg'
       });
       $("#search-title").text(fr.title);
-      $("#help-btn").attr("data-tooltip",fr.helpBtn);
+      //$("#help-btn").attr("data-tooltip",fr.helpBtn);
       $("#tutorial-btn").attr("data-tooltip",fr.tutorialBtn);
-      $("#feedback-btn").attr("data-tooltip",fr.feedbackBtn);
+      //$("#feedback-btn").attr("data-tooltip",fr.feedbackBtn);
       $(".download-btns").each(function (){
         $(this).attr("data-tooltip",fr.downloadBtn);
       });
@@ -143,39 +139,60 @@ $(document).ready(function (){
       });
 
       $("#search-title").text(en.title);
-      $("#help-btn").attr("data-tooltip",en.helpBtn);
+      //$("#help-btn").attr("data-tooltip",en.helpBtn);
       $("#tutorial-btn").attr("data-tooltip",en.tutorialBtn);
-      $("#feedback-btn").attr("data-tooltip",en.feedbackBtn);
+      //$("#feedback-btn").attr("data-tooltip",en.feedbackBtn);
       $(".download-btns").each(function (){
         $(this).attr("data-tooltip",en.downloadBtn);
       });
     }
 
-    $("#help-btn-div a").tooltip({delay: 50});
+    //$("#help-btn-div a").tooltip({delay: 50});
     $(".download-btns").tooltip({delay: 0}).each(function (){
       $("#"+$(this).attr('data-tooltip-id')).css("margin-top", "16px").css("margin-left", "-8px");
     });
   });
 
+  /*
   $("#help-btn").click(function (){
     $("#help-btn-div a").tooltip({delay: 50});
   });
-
+  */
   //Tutorial
   $("#tutorial-btn").click(function (){
     tutMode = true;
+    $(".tut1explain").css("display","block");
     $("#tutorial-div").show().transition({opacity:1});
     $("#tut1container").css("background-color","white").css('position', 'relative').css("z-index","101");
-      $("#tut1explain1").transition({opacity:1, y:10, delay:1000});
-      $("#tut1explain2").transition({opacity:1, y:10, delay:1500});
-      $("#tut1explain3").transition({opacity:1, y:10, delay:2000});
-      $("#tut1explain4").transition({opacity:1, y:10, delay:2500});
-      $("#tut1explain5").transition({opacity:1, y:10, delay:3000});
+    $("#tut1explain1").transition({opacity:1, y:10, delay:1000});
+    $("#tut1explain2").transition({opacity:1, y:10, delay:1500});
+    $("#tut1explain3").transition({opacity:1, y:10, delay:2000});
+    $("#tut1explain4").transition({opacity:1, y:10, delay:2500});
+    $("#tut1explain5").transition({opacity:1, y:10, delay:3000});
+    $("#tut1title").show();
+    $("#tutorial-btn").hide();
+    $("#close-btn-div").show();
   });
+
+  $("#close-btn-div").click(function (){
+    tutMode = false;
+    $(".tut1explain").css("display","none");
+    $("#tutorial-div").hide().transition({opacity:0, duration:0});
+    $("#tut1explain1").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain2").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain3").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain4").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain5").transition({opacity:0, y:0, duration:0});
+
+    $("#tutorial-btn").show();
+    $("#close-btn-div").hide();
+  });
+
+
 
   //Begining Init
   $("#search-bar").focus().val("");
-  $("#search-results").css("top", ($(".container").height()+160) + "px");
+  $("#search-results").css("top", ($(".container").height()+180) + "px");
 });
 
 //Socket Io
@@ -193,13 +210,22 @@ socket.on('searchResults', function (data) {
   $("#search-results-count").transition({opacity:1,delay:300});
   //Results
   for (var i = 0; i < data.answers.length; i++) {
+
     if($('#french-btn').data("current") == 'en'){
       var downloadText = en.downloadBtn;
+      var thumbUpText = "This is the correct result";
+      var thumbDownText = "This is the wrong result";
     }else{
       var downloadText = fr.downloadBtn;
+      var thumbUpText = "This is the correct result";
+      var thumbDownText = "This is the wrong result";
     }
-
-    $("#search-results").append("<div class='row' id='search-"+i+"' style='opacity:0; transform: translate(0px, 10px);'><div class='col s12'><div class='result-container'>"+
+    //Todo, set ID. return ID.
+    $("#search-results").append("<div class='row search-result' id='search-"+i+"' style='opacity:0; transform: translate(0px, 10px);'><div class='col s12'><div class='result-container'>"+
+      "<div class='thumb-div'>"+
+        "<a class='thumb-buttons thumb-up' data-position='top' data-delay='50' data-tooltip='"+thumbUpText+"' ><i class='material-icons light-green-text'>thumb_up</i></a></br>"+
+        "<a class='thumb-buttons thumb-down' data-position='bottom' data-delay='50' data-tooltip='"+thumbDownText+"' ><i class='material-icons red-text text-lighten-2'>thumb_down</i></a>"+
+      "</div>"+
       "<div class='result-title'>"+data.answers[i].pdf_link+
         "<a class='btn-flat waves-effect waves-grey lighten-2 download-btns' data-position='top' data-delay='50' data-tooltip='"+downloadText+"' id='download-"+i+"'><i class='material-icons'>file_download</i></a>"+
       "</div>"+
@@ -213,9 +239,48 @@ socket.on('searchResults', function (data) {
       "</div></div></div>");
     $("#search-"+i).transition({opacity:1, y:0, delay: 100 + i*250});
   }
+  //download button event
+  $(".download-btns").click(function (){
+    //Find & download link
+    alert("find and download link");
+  });
   $(".download-btns").tooltip({delay: 50}).each(function (){
     $("#"+$(this).data('tooltip-id')).css("margin-top", "16px").css("margin-left", "-8px");
   });
+
+  //Thumb up or down
+  $(".thumb-up").click(function (){
+    $(this).parent().find('.thumb-down').removeClass('thumb-active');
+    $(this).addClass('thumb-active');
+  });
+  $(".thumb-up").tooltip({delay: 50}).each(function (){
+    $("#"+$(this).data('tooltip-id')).css("margin-top", "16px");
+  });
+
+  $(".thumb-down").click(function (){
+    $(this).parent().find('.thumb-up').removeClass('thumb-active');
+    $(this).addClass('thumb-active');
+  });
+  $(".thumb-down").tooltip({delay: 50}).each(function (){
+    $("#"+$(this).data('tooltip-id'));
+  });
+
+  //If still tutorial mode, show the next steps & change the buttons back.
+  if(tutMode){
+    //Remove the first tutorial
+    tutMode = false;
+    $(".tut1explain").css("display","none");
+    $("#tut1container").css("background-color","white").css('position', 'relative').css("z-index","9");
+    $("#tut1explain1").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain2").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain3").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain4").transition({opacity:0, y:0, duration:0});
+    $("#tut1explain5").transition({opacity:0, y:0, duration:0});
+    //Start the second tutorial.
+    //grab the first search result
+    var fSearch = $("#search-results").find(".search-result")[0];
+    //$("#search-results").css("background-color","white").css("z-index","120");
+  }
 });
 
 socket.on('autoComplete', function (data){
