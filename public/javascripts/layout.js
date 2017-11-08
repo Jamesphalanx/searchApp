@@ -1,5 +1,5 @@
 //Socket Connection.//Socket Connection.
-var socket = io.connect('http://localhost:81');
+var socket = io.connect('http://10.54.60.116:81');
 
 var en = {
   title : "Search Collective Agreements",
@@ -202,14 +202,17 @@ socket.on('searchResults', function (data) {
     $(this).remove();
   });
   //Search Result Count
+  /*
   if($('#french-btn').data("current") == 'en'){
-    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.answers.length+"</b>"+en.resultsTxt+"</h4>");
+    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.data.length+"</b>"+en.resultsTxt+"</h4>");
   }else{
-    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.answers.length+"</b>"+fr.resultsTxt+"</h4>");
+    $("#search-results").append("<h4 id='search-results-count' style='opacity:0;'><b>"+data.data.length+"</b>"+fr.resultsTxt+"</h4>");
   }
   $("#search-results-count").transition({opacity:1,delay:300});
+  */
+
   //Results
-  for (var i = 0; i < data.answers.length; i++) {
+  for (var i = 0; i < data.data.length; i++) {
 
     if($('#french-btn').data("current") == 'en'){
       var downloadText = en.downloadBtn;
@@ -226,23 +229,28 @@ socket.on('searchResults', function (data) {
         "<a class='thumb-buttons thumb-up' data-position='top' data-delay='50' data-tooltip='"+thumbUpText+"' ><i class='material-icons light-green-text'>thumb_up</i></a></br>"+
         "<a class='thumb-buttons thumb-down' data-position='bottom' data-delay='50' data-tooltip='"+thumbDownText+"' ><i class='material-icons red-text text-lighten-2'>thumb_down</i></a>"+
       "</div>"+
-      "<div class='result-title'>"+data.answers[i].pdf_link+
+      "<div class='result-title'>"+"temp title"+ //data.data[i][1]+
         "<a class='btn-flat waves-effect waves-grey lighten-2 download-btns' data-position='top' data-delay='50' data-tooltip='"+downloadText+"' id='download-"+i+"'><i class='material-icons'>file_download</i></a>"+
       "</div>"+
       "<div class='result-pdf'>"+
         "<div class='result-pdf-page z-depth-4'>"+
           "<p class='blurry-text1'> Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nulla Lacinia, Urna Quis Pharetra Facilisis, Arcu Augue Pharetra Ligula Ac Laoreet Mauris.</p>"+
-          "<p class='result-text'>"+data.answers[i].passage+"</p>"+
-          "<p class='blurry-text2'> Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nulla Lacinia, Urna Quis Pharetra Facilisis, Arcu Augue Pharetra Ligula, Ac Laoreet Mauris Nulla Eu Magna. Morbi Luctus Ex Eget Pellentesque Pretium. Fusce At Quam Orci. Etiam Sapien Purus, Cursus Ut Elit Sed, Faucibus Convallis Nibh. Proin Tincidunt, Diam Et Aliquet Dictum, Neque Dui Faucibus Neque, Id Bibendum Elit Eros Sed Metus</p>"+
+          "<p class='result-text'>"+data.data[i][0]+"</p>"+
+          "<p class='blurry-text2'> Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nulla Lacinia, Urna Quis Pharetra Facilisis, Arcu Augue Pharetra Ligula, Ac Laoreet Mauris.</p>"+
           "</div>"+
         "</div>"+
       "</div></div></div>");
     $("#search-"+i).transition({opacity:1, y:0, delay: 100 + i*250});
   }
+  //click result to open up pdf.
+  $(".result-pdf").click(function (){
+    $.fileDownload('/pdf/GraphBasics.pdf');
+  });
+
   //download button event
   $(".download-btns").click(function (){
     //Find & download link
-    alert("find and download link");
+    $.fileDownload('/pdf/GraphBasics.pdf');
   });
   $(".download-btns").tooltip({delay: 50}).each(function (){
     $("#"+$(this).data('tooltip-id')).css("margin-top", "16px").css("margin-left", "-8px");
@@ -275,7 +283,7 @@ socket.on('searchResults', function (data) {
       var tutTitle = $("<div>");
       tutTitle.addClass("floatingtext");
       tutTitle.html("The PDF title is shown here");
-      tutTitle.css("margin-top","-37px");
+      tutTitle.css("margin-top","-33px");
       tutTitle.css("margin-left","30px");
       $(fSearch).append(tutTitle);
 

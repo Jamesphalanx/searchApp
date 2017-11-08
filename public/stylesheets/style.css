@@ -22,10 +22,9 @@ h1,h2,h3,h4{
   font-size: 14px;
   font-weight: 100;
   margin-bottom: 50px;
-
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 #search-bar-div:hover{
-  border: 1px solid #ddd;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.08);
 }
 #search-bar{
@@ -156,13 +155,25 @@ h1,h2,h3,h4{
   font-weight: 100;
   margin-top: -25px;
   margin-bottom: 6px;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 .result-pdf{
   background-color: #eee;
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  cursor: pointer;
 }
+.result-pdf:hover{
+  box-shadow: 0 3px 5px rgba(0,0,0,0.16), 0 3px 5px rgba(0,0,0,0.18);
+}
+
 .result-pdf-page{
   background-color: white;
   margin-left: 10%;
@@ -173,14 +184,21 @@ h1,h2,h3,h4{
 }
 .result-text{
   font-size: 16px;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
+
 .blurry-text1{
   color: #eee;
   filter: progid:DXImageTransform.Microsoft.Chroma(color=#333333),
           progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
           progid:DXImageTransform.Microsoft.Blur(pixelradius=3);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -24px;
+  margin-top: -23px;
   margin-bottom: -7px;
   white-space: nowrap;
   overflow: hidden;
@@ -200,7 +218,7 @@ h1,h2,h3,h4{
           progid:DXImageTransform.Microsoft.MotionBlur(strength=0, direction=0),
           progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
   text-shadow: 0 0 5px rgba(0,0,0,0.4);
-  margin-top: -5px;
+  margin-top: -10px;
   margin-bottom: -23px;
   white-space: nowrap;
   overflow: hidden;
@@ -226,6 +244,7 @@ h1,h2,h3,h4{
 }
 .thumb-up, .thumb-down{
   opacity: 0.35;
+  transition: all 1s cubic-bezier(.25,.8,.25,1);
 }
 .thumb-up:hover, .thumb-down:hover{
   opacity: 1;
@@ -318,4 +337,9 @@ h1,h2,h3,h4{
 }
 .floatingtext:hover{
   background-color: #454545;
+}
+
+/*iframe PDFS*/
+#pdf-iframe{
+  display: none;
 }
