@@ -46,6 +46,7 @@ app.use('/users', users);
 
 
 var autoCompleteSearch = require('./models/Search');
+var feedbackModel = require('./models/Feedback');
 
 io.on('connection', function (socket) {
   //autocomplete
@@ -64,7 +65,12 @@ io.on('connection', function (socket) {
 
   //On Search
   socket.on('searchAttempt', function (searchObj){
-    var result = querystring.stringify({query: searchObj.searchInput});
+    if(searchObj.searchFilter.pdfName){
+      var pdfparam = searchObj.searchFilter.pdfName;
+    }else{
+      var pdfparam = "";
+    }
+    var result = querystring.stringify({query: searchObj.searchInput, pdf:pdfparam});
     //call localhost 5000
     var options = {
       host: 'localhost',
@@ -98,7 +104,23 @@ io.on('connection', function (socket) {
       console.log(e);
       //push python connection error.
     });
+  });
 
+  //On Thumbs feedback
+  socket.on('feedbackSend', function (feedbackObj){
+    if(feedbackObj.oid){
+      var updateBool = feedbackObj.data.feedback;
+      feedbackModel.findOneAndUpdate({_id:mongoose.Types.ObjectId(feedbackObj.oid)}, {$set:{feedback:updateBool}}, function (err){
+        if (err) return console.error(err);
+      });
+    }else{
+      //No object Id
+      var insertFeedback = new feedbackModel(feedbackObj.data);
+      insertFeedback.save(function (err, feedSaved) {
+        if (err) return console.error(err);
+        socket.emit('feedbackSaved', {id:feedbackObj.id, data:feedSaved});
+      });
+    }
   });
 });
 
