@@ -1,5 +1,5 @@
 //Socket Connection.//Socket Connection.
-var socket = io.connect('http://10.54.60.116:81');
+var socket = io.connect('http://10.54.60.116:82');
 /*
 Created By: James Shin
 Date: 2017-11-15
