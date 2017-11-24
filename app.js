@@ -11,6 +11,10 @@ var users = require('./routes/users');
 var app = express();
 var http = require('http');
 var querystring = require("querystring");
+//csv
+var fs = require('fs');
+var csv = require('csv');
+var parse = require('csv-parse');
 
 //Mongoose Init
 var mongoose = require('mongoose');
@@ -47,6 +51,7 @@ app.use('/users', users);
 
 var autoCompleteSearch = require('./models/Search');
 var feedbackModel = require('./models/Feedback');
+var filedataModel = require('./models/FileData');
 
 io.on('connection', function (socket) {
   //autocomplete
@@ -123,6 +128,75 @@ io.on('connection', function (socket) {
     }
   });
 });
+
+//Grab TSV file every 3 am.
+var file = fs.createWriteStream("iris_to_negotech_extract.tab");
+var options = {
+  host: "proxy.prv",
+  path: "http://negotech.labour.gc.ca/data/iris_to_negotech_extract.tab",
+  headers: {
+    Host: "negotech.labour.gc.ca"
+  }
+};
+http.get(options, function(res) {
+  res.pipe(file);
+  res.on('end', function () {
+    console.log('file download complete');
+    //drop database.
+    filedataModel.collection.drop();
+    //read the file and insert to DB.
+    var parser = parse({delimiter: '\t', quote:''});
+    var input = fs.createReadStream('iris_to_negotech_extract.tab');
+    parser.on('readable', function(){
+      while(record = parser.read()){
+        var tempData = {
+          new_agreementnumber : record[0],
+          new_effectivedate : record[1],
+          new_expirydate : record[2],
+          new_settlementdate : record[3],
+          new_jurprov : record[4],
+          new_jurisdictioncode : record[5],
+          new_employeecount : record[6],
+          new_naicscodeid_firsttwodigit : record[7],
+          new_publicprivate : record[8],
+          new_naicscodeid : record[9],
+          new_summaryreportavailabilityindicator : record[10],
+          new_province : record[11],
+          new_provinceenglish : record[12],
+          new_provincefrench : record[13],
+          new_citynameenglish : record[14],
+          new_citynamefrench : record[15],
+          new_cityprovincenameenglish : record[16],
+          new_cityprovincenamefrench : record[17],
+          new_unionid : record[18],
+          new_unionnameenglish : record[19],
+          new_unionnamefrench : record[20],
+          new_affiliationtext : record[21],
+          new_unionacronymenglish : record[22],
+          new_unionacronymfrench : record[23],
+          new_noccodeid : record[24],
+          new_name_e : record[25],
+          new_name_f : record[26],
+          new_companyofficialnameeng : record[27],
+          new_companyofficialnamefra : record[28],
+          new_currentagreementindicator: record[29]
+        };
+        var insertFileData = new filedataModel(tempData);
+        insertFileData.save(function (err){
+          if (err) return console.error(err);
+        });
+      }
+    });
+    parser.on('finish', function(){
+      console.log('complete');
+    });
+    parser.on('error', function(err){
+      console.log(err.message);
+    });
+    input.pipe(parser);
+  });
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
