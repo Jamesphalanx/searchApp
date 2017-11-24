@@ -16,6 +16,9 @@ var fs = require('fs');
 var csv = require('csv');
 var parse = require('csv-parse');
 
+//cron
+var CronJob = require('cron').CronJob;
+
 //Mongoose Init
 var mongoose = require('mongoose');
 //Socket Io Init
@@ -101,6 +104,14 @@ io.on('connection', function (socket) {
             });
           }
         });
+        var findArray = [];
+        for (var i = 0; i < finalObj.data.length; i++) {
+          var agreementNum = finalObj.data[i].pdf_url.split('/').slice(-1)[0].split('.')[0];
+          findArray.push(agreementNum.substr(0,5) + "-" + agreementNum.substr(5,2));
+        };
+        filedataModel.find({agreementnumber:{$in:findArray}}, function (err, doc){
+          socket.emit('searchMeta', doc);
+        });
         //return serach results
         socket.emit('searchResults', finalObj);
       });
@@ -129,74 +140,85 @@ io.on('connection', function (socket) {
   });
 });
 
-//Grab TSV file every 3 am.
-var file = fs.createWriteStream("iris_to_negotech_extract.tab");
-var options = {
-  host: "proxy.prv",
-  path: "http://negotech.labour.gc.ca/data/iris_to_negotech_extract.tab",
-  headers: {
-    Host: "negotech.labour.gc.ca"
-  }
-};
-http.get(options, function(res) {
-  res.pipe(file);
-  res.on('end', function () {
-    console.log('file download complete');
-    //drop database.
-    filedataModel.collection.drop();
-    //read the file and insert to DB.
-    var parser = parse({delimiter: '\t', quote:''});
-    var input = fs.createReadStream('iris_to_negotech_extract.tab');
-    parser.on('readable', function(){
-      while(record = parser.read()){
-        var tempData = {
-          new_agreementnumber : record[0],
-          new_effectivedate : record[1],
-          new_expirydate : record[2],
-          new_settlementdate : record[3],
-          new_jurprov : record[4],
-          new_jurisdictioncode : record[5],
-          new_employeecount : record[6],
-          new_naicscodeid_firsttwodigit : record[7],
-          new_publicprivate : record[8],
-          new_naicscodeid : record[9],
-          new_summaryreportavailabilityindicator : record[10],
-          new_province : record[11],
-          new_provinceenglish : record[12],
-          new_provincefrench : record[13],
-          new_citynameenglish : record[14],
-          new_citynamefrench : record[15],
-          new_cityprovincenameenglish : record[16],
-          new_cityprovincenamefrench : record[17],
-          new_unionid : record[18],
-          new_unionnameenglish : record[19],
-          new_unionnamefrench : record[20],
-          new_affiliationtext : record[21],
-          new_unionacronymenglish : record[22],
-          new_unionacronymfrench : record[23],
-          new_noccodeid : record[24],
-          new_name_e : record[25],
-          new_name_f : record[26],
-          new_companyofficialnameeng : record[27],
-          new_companyofficialnamefra : record[28],
-          new_currentagreementindicator: record[29]
-        };
-        var insertFileData = new filedataModel(tempData);
-        insertFileData.save(function (err){
-          if (err) return console.error(err);
-        });
+var job = new CronJob({
+  cronTime: '00 00 11 * * 1-5',
+  onTick: function() {
+    /* Grab TSV file
+     * Runs every weekday (Monday through Friday)
+     * at 11:30:00 AM. It does not run on Saturday
+     * or Sunday.
+     */
+    var file = fs.createWriteStream("iris_to_negotech_extract.tab");
+    var options = {
+      host: "proxy.prv",
+      path: "http://negotech.labour.gc.ca/data/iris_to_negotech_extract.tab",
+      headers: {
+        Host: "negotech.labour.gc.ca"
       }
+    };
+    http.get(options, function(res) {
+      res.pipe(file);
+      res.on('end', function () {
+        console.log('file download complete');
+        //drop database.
+        filedataModel.collection.drop();
+        //read the file and insert to DB.
+        var parser = parse({delimiter: '\t', quote:''});
+        var input = fs.createReadStream('iris_to_negotech_extract.tab');
+        parser.on('readable', function(){
+          while(record = parser.read()){
+            var tempData = {
+              agreementnumber : record[0],
+              effectivedate : record[1],
+              expirydate : record[2],
+              settlementdate : record[3],
+              jurprov : record[4],
+              jurisdictioncode : record[5],
+              employeecount : record[6],
+              naicscodeid_firsttwodigit : record[7],
+              publicprivate : record[8],
+              naicscodeid : record[9],
+              summaryreportavailabilityindicator : record[10],
+              province : record[11],
+              provinceenglish : record[12],
+              provincefrench : record[13],
+              citynameenglish : record[14],
+              citynamefrench : record[15],
+              cityprovincenameenglish : record[16],
+              cityprovincenamefrench : record[17],
+              unionid : record[18],
+              unionnameenglish : record[19],
+              unionnamefrench : record[20],
+              affiliationtext : record[21],
+              unionacronymenglish : record[22],
+              unionacronymfrench : record[23],
+              noccodeid : record[24],
+              name_e : record[25],
+              name_f : record[26],
+              companyofficialnameeng : record[27],
+              companyofficialnamefra : record[28],
+              currentagreementindicator: record[29]
+            };
+            var insertFileData = new filedataModel(tempData);
+            insertFileData.save(function (err){
+              if (err) return console.error(err);
+            });
+          }
+        });
+        parser.on('finish', function(){
+          console.log('complete');
+        });
+        parser.on('error', function(err){
+          console.log(err.message);
+        });
+        input.pipe(parser);
+      });
     });
-    parser.on('finish', function(){
-      console.log('complete');
-    });
-    parser.on('error', function(err){
-      console.log(err.message);
-    });
-    input.pipe(parser);
-  });
+  },
+  start: false,
+  timeZone: 'America/Toronto'
 });
-
+job.start();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
