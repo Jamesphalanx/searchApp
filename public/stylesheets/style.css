@@ -132,9 +132,10 @@ h1,h2,h3,h4{
 }
 .pdf-icon-div{
   position: absolute;
-  margin-left: 5px;
+  margin-right: 45px;
   margin-top: 5px;
   cursor: pointer;
+  right: 0;
 }
 /*Loading*/
 #loading-container{
@@ -362,12 +363,15 @@ h1,h2,h3,h4{
 #help-btn-grp li{
   margin-bottom: 10px;
 }
+#tags-btn-div{
+  bottom: 160px;
+}
 .metadata-div{
   position: absolute;
   margin-top: 6px;
 }
 .metadata-tags{
-  color: #555;
+  color: #333;
   font-weight: 300;
   background-color: #eee;
   padding-left: 5px;
@@ -375,8 +379,8 @@ h1,h2,h3,h4{
   border-radius: 3px;
   float: left;
   margin-right: 4px;
+  margin-bottom: 4px;
 }
-
 /*Tutorial*/
 #tutorial-div{
   background: url(../images/iefilter.jpg) no-repeat -999px -999px;

@@ -490,6 +490,10 @@ socket.on('searchMeta', function (data){
     $metadataDiv.append("<div class='metadata-tags'>"+data[i].companyofficialnameeng+"</div>");
     //union
     $metadataDiv.append("<div class='metadata-tags grey darken-3 white-text'>"+data[i].unionacronymenglish+"</div>");
+    //Employees
+    $metadataDiv.append('<div class="metadata-tags blue-grey lighten-4"><svg class="svg-person" width="15" height="15" viewBox="0 -2 18 18"><path d="M9 8c1.66 0 2.99-1.34 2.99-3S10.66 2 9 2C7.34 2 6 3.34 6 5s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V16h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>&nbsp;'+data[i].employeecount+"</div>");
+    //Dates
+    $metadataDiv.append('<div class="metadata-tags purple lighten-3"><svg width="15" height="15" viewBox="0 -2 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>&nbsp;'+data[i].effectivedate+ " ~ "+ data[i].expirydate+"</div>");
   };
 });
 
