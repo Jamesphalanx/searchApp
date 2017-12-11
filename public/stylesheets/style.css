@@ -199,6 +199,9 @@ h1,h2,h3,h4{
 }
 
 /*Results*/
+.highlight {
+  background: yellow;
+}
 #search-results{
   position: absolute;
   width: inherit;

@@ -312,6 +312,17 @@ socket.on('searchResults', function (data) {
       "<div class='metadata-div'></div>"+
       "</div></div></div>");
     $("#search-"+i).transition({opacity:1, y:0, delay: 100 + i*250});
+    var highlightResults = data.query.split(' ');
+    for (var j = 0; j < highlightResults.length; j++) {
+      var reg = new RegExp(highlightResults[j], 'gi');
+      var text = $("#search-"+i).find('.result-text').html();
+      var txt = text.replace(reg, function(str) {
+        return "<span class='highlight'>" + str + "</span>";
+      });
+      $("#search-"+i).find('.result-text').html(txt);
+    };
+    
+
   }
   //click result to open up pdf.
   $(".pdf-icon-div").click(function (){
