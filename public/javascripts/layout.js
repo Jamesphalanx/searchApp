@@ -320,6 +320,7 @@ socket.on('searchResults', function (data) {
       "<div class='metadata-div'></div>"+
       "</div></div></div>");
     $("#search-"+i).transition({opacity:1, y:0, delay: 100 + i*250});
+    //Highlight text
     for (var j = 0; j < highlightResults.length; j++) {
       var reg = new RegExp(highlightResults[j], 'gi');
       var text = $("#search-"+i).find('.result-text').html();
@@ -328,8 +329,6 @@ socket.on('searchResults', function (data) {
       });
       $("#search-"+i).find('.result-text').html(txt);
     };
-    
-
   }
   //click result to open up pdf.
   $(".pdf-icon-div").click(function (){
@@ -353,8 +352,8 @@ socket.on('searchResults', function (data) {
       var pdflink = $(this).data('pdflink');
       var pdfmeta = $(this).data('pdfmeta').split('-');
       var $currentIframe = $("<embed>");
-
-      var pdfoptions = "#pagemode=none&navpanes=0&toolbar=0&statusbar=0&zoom=80&page="+(parseInt(pdfmeta[1])+1);
+      //alert(pdfmeta);
+      var pdfoptions = "#pagemode=none&navpanes=0&toolbar=0&statusbar=0&zoom=80"//&page="+(parseInt(pdfmeta[1])+1);
       $currentIframe.css('height', $(this).height()-40);
       $currentIframe.css('width', $(this).width()-40);
       $currentIframe.attr('src',pdflink+pdfoptions);
@@ -497,21 +496,31 @@ socket.on('searchMeta', function (data){
 
     //current agreement indicator
     if(data[i].currentagreementindicator == 'Current'){
-      $metadataDiv.append("<div class='metadata-tags green lighten-2'>"+data[i].currentagreementindicator+"</div>");
+      var $tempTag = $("<div>").addClass('metadata-tags green lighten-2 tooltipped').attr('data-tooltip',"Current Agreement Indicator").attr('data-position',"bottom").html(data[i].currentagreementindicator);
+
+      $metadataDiv.append($tempTag);
     }else if(data[i].currentagreementindicator == 'Historical'){
-      $metadataDiv.append("<div class='metadata-tags red lighten-2'>"+data[i].currentagreementindicator+"</div>");
+      var $tempTag = $("<div>").addClass('metadata-tags red lighten-2 tooltipped').attr('data-tooltip',"Current Agreement Indicator").attr('data-position',"bottom").html(data[i].currentagreementindicator);
+      $metadataDiv.append($tempTag);
     }else if(data[i].currentagreementindicator == 'Active'){
-      $metadataDiv.append("<div class='metadata-tags amber lighten-2'>"+data[i].currentagreementindicator+"</div>");
+      var $tempTag = $("<div>").addClass('metadata-tags amber lighten-2 tooltipped').attr('data-tooltip',"Current Agreement Indicator").attr('data-position',"bottom").html(data[i].currentagreementindicator);
+      $metadataDiv.append($tempTag);
     }
 
     //company
-    $metadataDiv.append("<div class='metadata-tags'>"+data[i].companyofficialnameeng+"</div>");
+    var $tempTag = $("<div>").addClass('metadata-tags tooltipped').attr('data-tooltip',"Company Name").attr('data-position',"bottom").html(data[i].companyofficialnameeng);
+    $metadataDiv.append($tempTag);
     //union
-    $metadataDiv.append("<div class='metadata-tags grey darken-3 white-text'>"+data[i].unionacronymenglish+"</div>");
+    var $tempTag = $("<div>").addClass('metadata-tags grey darken-3 white-text tooltipped').attr('data-tooltip',"Union Name").attr('data-position',"bottom").html(data[i].unionacronymenglish);
+    $metadataDiv.append($tempTag);
     //Employees
-    $metadataDiv.append('<div class="metadata-tags blue-grey lighten-4"><svg class="svg-person" width="15" height="15" viewBox="0 -2 18 18"><path d="M9 8c1.66 0 2.99-1.34 2.99-3S10.66 2 9 2C7.34 2 6 3.34 6 5s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V16h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>&nbsp;'+data[i].employeecount+"</div>");
+    var $tempTag = $("<div>").addClass('metadata-tags blue-grey lighten-4 tooltipped').attr('data-tooltip',"# of Employees").attr('data-position',"bottom").html('<svg class="svg-person" width="15" height="15" viewBox="0 -2 18 18"><path d="M9 8c1.66 0 2.99-1.34 2.99-3S10.66 2 9 2C7.34 2 6 3.34 6 5s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V16h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>&nbsp;'+data[i].employeecount);
+    $metadataDiv.append($tempTag);
     //Dates
-    $metadataDiv.append('<div class="metadata-tags purple lighten-3"><svg width="15" height="15" viewBox="0 -2 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>&nbsp;'+data[i].effectivedate+ " ~ "+ data[i].expirydate+"</div>");
+    var $tempTag = $("<div>").addClass('metadata-tags purple lighten-3 tooltipped').attr('data-tooltip',"Agreement Date").attr('data-position',"bottom").html('<svg width="15" height="15" viewBox="0 -2 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>&nbsp;'+data[i].effectivedate+ ' ~ '+ data[i].expirydate);
+    $metadataDiv.append($tempTag);
+
+    $('.tooltipped').tooltip({delay: 50});
   };
 });
 

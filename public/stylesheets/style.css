@@ -202,6 +202,9 @@ h1,h2,h3,h4{
 .highlight {
   background: yellow;
 }
+.search-result{
+  margin-bottom: 34px;
+}
 #search-results{
   position: absolute;
   width: inherit;
