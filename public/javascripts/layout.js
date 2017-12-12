@@ -352,8 +352,7 @@ socket.on('searchResults', function (data) {
       var pdflink = $(this).data('pdflink');
       var pdfmeta = $(this).data('pdfmeta').split('-');
       var $currentIframe = $("<embed>");
-      //alert(pdfmeta);
-      var pdfoptions = "#pagemode=none&navpanes=0&toolbar=0&statusbar=0&zoom=80"//&page="+(parseInt(pdfmeta[1])+1);
+      var pdfoptions = "#pagemode=none&navpanes=0&toolbar=0&statusbar=0&zoom=80&page="+(parseInt(pdfmeta[1])+1);
       $currentIframe.css('height', $(this).height()-40);
       $currentIframe.css('width', $(this).width()-40);
       $currentIframe.attr('src',pdflink+pdfoptions);
