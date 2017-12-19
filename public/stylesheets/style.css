@@ -85,7 +85,7 @@ h1,h2,h3,h4{
   font-size: 18px;
   border: 1px solid #fff;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);
-  height: 30px;
+  min-height: 30px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #fff;
@@ -122,7 +122,20 @@ h1,h2,h3,h4{
   font-weight: 300;
   opacity: 0;
 }
-
+/*chosen alteration*/
+.chosen-container-multi{
+  margin-left: -10px;
+  box-shadow: none !important;
+  background-image:none !important;
+  border: none !important;
+}
+.chosen-choices{
+  border: none !important;
+  background-image:none !important;
+}
+.chosen-search-input{
+  width: 180px !important;
+}
 /*menu*/
 #french-btn{
   -webkit-transition: translate3d(0,0,0);

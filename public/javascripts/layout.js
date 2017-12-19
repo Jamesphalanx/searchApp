@@ -2,6 +2,12 @@
 Created By: James Shin
 Date: 2017-11-15
 */
+if(typeof(String.prototype.trim) === "undefined"){
+  String.prototype.trim = function() 
+  {
+    return String(this).replace(/^\s+|\s+$/g, '');
+  };
+}
 var en = {
   title : "Search Collective Agreements",
   helpBtn : "Help",
@@ -57,7 +63,6 @@ $(document).ready(function (){
       $('#filter-div').transition({opacity:0});
       $('#filter-btn').removeClass('active');
 
-
       $("#auto-complete").html("").css("border-top", "none");
       //If there are search results currently...
       if($("#search-results").html() != ''){
@@ -66,13 +71,15 @@ $(document).ready(function (){
           $(this).fadeIn();
           loadingAnimation();
           //Search for something
-          socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:$("#filter-pdfname-input").val()}});
+          var tempVar = $("#filter-pdfname-input").val().toString().replace('-','') + "a";
+          socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:tempVar}});
         });
       }else{
         //Loading Gif
         loadingAnimation();
         //Search for something
-        socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:$("#filter-pdfname-input").val()}});
+        var tempVar = $("#filter-pdfname-input").val().toString().replace('-','') + "a";
+        socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:tempVar}});
       }
     }else if(event.which == 40){
       //Down
@@ -141,6 +148,18 @@ $(document).ready(function (){
   });
 
   //Search Filter Icon
+  $("#filter-pdfname-input").chosen({width:"100%", placeholder_text_multiple:"Type in Agreement Number", no_results_text: "More Numbers Required"});
+  $("#filter-pdfname").find('.chosen-search-input').keyup(function (event){
+    if(event.which == 37 || event.which == 39 || event.which == 16 || event.which == 17 || event.which == 18 || event.which == 9 || event.which == 38 || event.which == 40 || event.which == 13){
+
+    }else{
+      if($(this).val().length > 3){
+        socket.emit('pdfNameSearch', {searchInput:$(this).val()});
+      }
+    }
+  });
+
+/*
   $('#filter-pdfname-input').keyup(function (event){
     if($(this).val() == ''){
       $("#search-filters").transition({opacity:0});
@@ -155,6 +174,7 @@ $(document).ready(function (){
       $("#search-filters").text("Within "+$(this).val()+".pdf");
     }
   });
+*/
 
   //French Translations
   $('#french-btn').click(function (){
@@ -268,11 +288,15 @@ socket.on('searchResults', function (data) {
   */
 
   var highlightResults = data.query.split(' ');
-  var stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same","shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this","those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while","who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"];
+  var stopwords = [" ","a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same","shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this","those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while","who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"];
   for(var i = highlightResults.length-1; i--;){
-    var tempComp = highlightResults[i].toLowerCase();
-    if(stopwords.indexOf(tempComp) != -1){
+    if(highlightResults[i] == '' || highlightResults == " "){
       highlightResults.splice(i, 1);
+    }else{
+      var tempComp = highlightResults[i].toLowerCase();
+      if(stopwords.indexOf(tempComp) != -1){
+        highlightResults.splice(i, 1);
+      }
     }
   };
   //Results
@@ -548,4 +572,19 @@ socket.on('autoComplete', function (data){
 
 socket.on('feedbackSaved', function (data){
   $(".thumb-div[data-id='"+data.id+"']").attr('data-oid',data.data._id);
+});
+
+socket.on('pdfNamesReturn', function (data){
+  var resultArray = $("#filter-pdfname-input").val();
+  $("#filter-pdfname-input option").each(function (i, opt){
+    if(resultArray.indexOf($(opt).text()) == -1){
+      $(opt).remove();
+    }
+  });
+  var tempSearch = $(".chosen-search-input").val();
+  for (var i = 0; i < data.length; i++) {
+    $("#filter-pdfname-input").append('<option>'+data[i].agreementnumber+'</option>');
+  };
+  $("#filter-pdfname-input").trigger("chosen:updated");
+  $(".chosen-search-input").val(tempSearch);
 });

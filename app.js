@@ -74,11 +74,13 @@ io.on('connection', function (socket) {
   //On Search
   socket.on('searchAttempt', function (searchObj){
     if(searchObj.searchFilter.pdfName){
-      var pdfparam = searchObj.searchFilter.pdfName;
+      var pdfparam = "["+searchObj.searchFilter.pdfName.toString() + "]";
     }else{
       var pdfparam = "";
     }
+
     var result = querystring.stringify({query: searchObj.searchInput, pdf:pdfparam});
+
     //call localhost 5000
     var options = {
       host: 'localhost',
@@ -137,6 +139,15 @@ io.on('connection', function (socket) {
         socket.emit('feedbackSaved', {id:feedbackObj.id, data:feedSaved});
       });
     }
+  });
+
+  //pdf search
+  //var dropdownpdf = filedataModel.find({},{agreementnumber:1, unionnameenglish:1, companyofficialnameeng:1}, function (){});
+  socket.on('pdfNameSearch', function (searchObj){
+    filedataModel.find({agreementnumber:{$regex:'.*'+searchObj.searchInput+'.*'}},{agreementnumber:1}, function (err, data){
+      if (err) return console.error(err);
+      socket.emit('pdfNamesReturn', data);
+    });
   });
 });
 
