@@ -387,7 +387,9 @@ h1,h2,h3,h4{
 }
 .metadata-div{
   position: absolute;
-  margin-top: 6px;
+  float: right;
+  margin-top: 3px;
+  left: 0;
 }
 .metadata-tags{
   color: #333;
@@ -396,9 +398,10 @@ h1,h2,h3,h4{
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 3px;
-  float: left;
   margin-right: 4px;
   margin-bottom: 4px;
+  float: right;
+  cursor: pointer;
 }
 /*Tutorial*/
 #tutorial-div{
@@ -467,4 +470,11 @@ h1,h2,h3,h4{
 /*iframe PDFS*/
 #pdf-iframe{
   display: none;
+}
+
+
+/*General*/
+
+.float-clear{
+  clear: both;
 }

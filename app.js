@@ -74,12 +74,13 @@ io.on('connection', function (socket) {
   //On Search
   socket.on('searchAttempt', function (searchObj){
     if(searchObj.searchFilter.pdfName){
+      //TODO ADD QUOTES!
       var pdfparam = "["+searchObj.searchFilter.pdfName.toString() + "]";
+      var result = querystring.stringify({query: searchObj.searchInput, pdfs:pdfparam});
     }else{
-      var pdfparam = "";
+      var result = querystring.stringify({query: searchObj.searchInput});
     }
 
-    var result = querystring.stringify({query: searchObj.searchInput, pdf:pdfparam});
 
     //call localhost 5000
     var options = {
@@ -111,7 +112,7 @@ io.on('connection', function (socket) {
           var agreementNum = finalObj.data[i].pdf_url.split('/').slice(-1)[0].split('.')[0];
           findArray.push(agreementNum.substr(0,5) + "-" + agreementNum.substr(5,2));
         };
-        filedataModel.find({agreementnumber:{$in:findArray}}, function (err, doc){
+        filedataModel.find({agreementnumber:{$in:findArray}},{currentagreementindicator:1,agreementnumber:1, unionnameenglish:1,companyofficialnameeng:1}, function (err, doc){
           socket.emit('searchMeta', doc);
         });
         //return serach results
