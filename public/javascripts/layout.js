@@ -71,14 +71,33 @@ $(document).ready(function (){
           $(this).fadeIn();
           loadingAnimation();
           //Search for something
-          var tempVar = $("#filter-pdfname-input").val().toString().replace('-','') + "a";
+          var tempVar = "";
+          if($("#filter-pdfname-input").val().length){
+            tempArr = $("#filter-pdfname-input").val();
+            for (var i = 0; i < tempArr.length; i++) {
+              tempArr[i] = tempArr[i].replace('-','') + "a";
+            };
+            tempVar = ("'"+tempArr.join("','")+"'");
+          }
           socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:tempVar}});
         });
       }else{
         //Loading Gif
         loadingAnimation();
         //Search for something
-        var tempVar = $("#filter-pdfname-input").val().toString().replace('-','') + "a";
+        var tempVar = "";
+        if($("#filter-pdfname-input").val().length){
+          var tempVar = "";
+          if($("#filter-pdfname-input").val().length){
+            tempArr = $("#filter-pdfname-input").val();
+            for (var i = 0; i < tempArr.length; i++) {
+              tempArr[i] = tempArr[i].replace('-','') + "a";
+            };
+            tempVar = ("'"+tempArr.join("','")+"'");
+          }
+          //tempVar = $("#filter-pdfname-input").val().toString().replace('-','') + "a";
+        }
+        console.log(tempVar);
         socket.emit('searchAttempt', {searchInput:$('#search-bar').val(), searchFilter:{pdfName:tempVar}});
       }
     }else if(event.which == 40){
@@ -516,7 +535,6 @@ socket.on('searchResults', function (data) {
 socket.on('searchMeta', function (data){
 
   var maxWidth = $('.result-container').offset().left + $('.result-pdf-page')[0].offsetLeft - 40;
-  console.log(maxWidth);
   $('.metadata-div').width(maxWidth);
 
   for (var i = 0; i < data.length; i++) {
