@@ -79,9 +79,8 @@ io.on('connection', function (socket) {
       var pdfparam = "["+ searchObj.searchFilter.pdfName + "]";
       var result = querystring.stringify({query: searchObj.searchInput, pdfs:pdfparam});
     }else{
-      var result = querystring.stringify({query: searchObj.searchInput});
+      var result = querystring.stringify({query: searchObj.searchInput, pdfs:"[]"});
     }
-
 
     //call localhost 5000
     var options = {
