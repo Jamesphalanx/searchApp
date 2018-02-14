@@ -74,13 +74,13 @@ io.on('connection', function (socket) {
   //On Search
   socket.on('searchAttempt', function (searchObj){
     if(searchObj.searchFilter.pdfName){
-      //TODO ADD QUOTES!
       //var tempStringArray = "'" + searchObj.searchFilter.pdfName.join("','") + "'";
       var pdfparam = "["+ searchObj.searchFilter.pdfName + "]";
       var result = querystring.stringify({query: searchObj.searchInput, pdfs:pdfparam});
     }else{
       var result = querystring.stringify({query: searchObj.searchInput, pdfs:"[]"});
     }
+      console.log(pdfparam);
 
     //call localhost 5000
     var options = {
